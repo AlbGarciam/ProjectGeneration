@@ -1,9 +1,9 @@
 import Foundation
+import ProjectGenerationKit
 import SwiftCLI
 import Version
 
 final class ReleaseCommand: BaseBuildCommand {
-    @Param var version: String
     @CollectedParam(minCount: 1) var schemes: [String]
     
     init() {
@@ -12,6 +12,6 @@ final class ReleaseCommand: BaseBuildCommand {
 
     override func execute() throws {
         try super.execute()
-        try generationKit.archive(.iOS, .ipadOS, .macOSCatalyst)
+        try schemes.forEach { try generationKit.archive($0, Platforms.allCases) }
     }
 }
