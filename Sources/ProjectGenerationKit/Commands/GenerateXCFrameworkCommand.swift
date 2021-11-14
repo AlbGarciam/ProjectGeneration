@@ -1,6 +1,7 @@
 //
 //  Created by Alberto García-Muñoz on 14/11/21.
 //
+import Foundation
 
 struct GenerateXCFrameworkCommand: CommandProtocol {
     let scheme: String
@@ -14,7 +15,7 @@ struct GenerateXCFrameworkCommand: CommandProtocol {
         var command = ["xcodebuild", "-create-xcframework"]
         frameworkPaths.forEach {
             command.append(contentsOf: ["-framework", "\($0)/Products/Library/Frameworks/\(scheme).framework"])
-            command.append(contentsOf: ["-debug-symbols", "\($0)/BCSymbolMaps"])
+            command.append(contentsOf: ["-debug-symbols", "\(FileManager.default.currentDirectoryPath)/\($0)/BCSymbolMaps"])
         }
         command.append(contentsOf: ["-output", "\(scheme).xcframework"])
         return command.joined(separator: " ")
