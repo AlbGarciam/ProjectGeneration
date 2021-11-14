@@ -10,13 +10,11 @@ struct ArchiveCommand: CommandProtocol {
         "archives/\(platform.rawValue).xcarchive"
     }
 
-    func getCommand() -> [String] {
-        return ["xcodebuild", "archive",
-                "-scheme", scheme,
-                "-destination", platform.destination,
-                "-archivePath", getDestinationPath(),
-                "SKIP_INSTALL", "NO",
-                "BUILD_LIBRARY_FOR_DISTRIBUTION", "YES"
-               ]
+    func getCommand() -> String {
+        ["xcodebuild", "archive",
+        "-scheme", scheme,
+        "-destination", platform.destination,
+        "-archivePath", getDestinationPath()
+        ].joined(separator: " ")
     }
 }

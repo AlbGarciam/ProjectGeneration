@@ -10,12 +10,13 @@ struct GenerateXCFrameworkCommand: CommandProtocol {
         "\(scheme).xcframework"
     }
 
-    func getCommand() -> [String] {
+    func getCommand() -> String {
         var command = ["xcodebuild", "-create-xcframework"]
         frameworkPaths.forEach {
-            command.append(contentsOf: ["-framework", $0])
+            command.append(contentsOf: ["-framework", "\($0)/Products/Library/Frameworks/\(scheme).framework"])
+            command.append(contentsOf: ["-debug-symbols", "\($0)/BCSymbolMaps"])
         }
         command.append(contentsOf: ["-output", "\(scheme).xcframework"])
-        return command
+        return command.joined(separator: " ")
     }
 }

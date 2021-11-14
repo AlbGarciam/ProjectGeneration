@@ -13,12 +13,12 @@ let swiftCLI: Target.Dependency = .product(name: "SwiftCLI", package: "SwiftCLI"
 let version: Target.Dependency = .product(name: "Version", package: "Version")
 
 //MARK: - Targets definition
-let projectGenerationKit: Target = .target(name: "ProjectGenerationKit",
-                                           dependencies: [])
-let projectGenerationCLI: Target = .target(name: "ProjectGenerationCLI",
-                                           dependencies: [swiftCLI, version, .init(projectGenerationKit)])
-let projectGeneration: Target = .target(name: "ProjectGeneration",
-                                        dependencies: [.init(projectGenerationCLI), version])
+let projectGenerationKit: Target = .target(name: "ProjectGenerationKit", dependencies: [swiftCLI])
+let projectGenerationCLI: Target = .target(name: "ProjectGenerationCLI", dependencies: [swiftCLI,
+                                                                                        version,
+                                                                                        .init(projectGenerationKit)])
+let projectGeneration: Target = .target(name: "ProjectGeneration", dependencies: [.init(projectGenerationCLI),
+                                                                                  version])
 
 //MARK: - Package definition
 let package = Package(

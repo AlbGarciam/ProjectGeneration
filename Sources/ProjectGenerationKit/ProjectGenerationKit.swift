@@ -14,11 +14,12 @@ public final class ProjectGenerationKit {
     @discardableResult
     public func archive(_ scheme: String, _ platforms: [Platforms]) throws -> String {
         try CleanCommand(scheme: scheme, platforms: platforms).execute()
-        let commands = platforms.map { ArchiveCommand(scheme: scheme, platform: $0) }
-        try commands.forEach { try $0.execute() }
-        let paths: [String] = commands.reduce([]) { $0 + [$1.getDestinationPath()] }
+        let archiveCommands = platforms.map { ArchiveCommand(scheme: scheme, platform: $0) }
+        let paths: [String] = archiveCommands.reduce([]) { $0 + [$1.getDestinationPath()] }
+        try archiveCommands.forEach { try $0.execute() }
         let generateCommand = GenerateXCFrameworkCommand(scheme: scheme, frameworkPaths: paths)
         try generateCommand.execute()
+        try FixModuleCommand(xcframeworkPath: generateCommand.getDestinationPath(), scheme: scheme).execute()
         return generateCommand.getDestinationPath()
     }
 }
