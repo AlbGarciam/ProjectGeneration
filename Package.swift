@@ -17,8 +17,8 @@ let projectGenerationKit: Target = .target(name: "ProjectGenerationKit", depende
 let projectGenerationCLI: Target = .target(name: "ProjectGenerationCLI", dependencies: [swiftCLI,
                                                                                         version,
                                                                                         .init(projectGenerationKit)])
-let projectGeneration: Target = .target(name: "ProjectGeneration", dependencies: [.init(projectGenerationCLI),
-                                                                                  version])
+let projectGeneration: Target = .executableTarget(name: "ProjectGeneration", dependencies: [.init(projectGenerationCLI),
+                                                                                            version])
 
 //MARK: - Package definition
 let package = Package(
